@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#000000"
+	android:gravity="center">
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:background="@drawable/btn_back"
+		android:padding="10dp"
+		android:layout_gravity="center"
+		android:id="@+id/pannelConnect">
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:background="#000000"
+			android:orientation="horizontal">
+
+			<EditText
+				android:layout_width="wrap_content"
+				android:ems="13"
+				android:layout_height="wrap_content"
+				android:typeface="monospace"
+				android:background="@drawable/btn_back"
+				android:id="@+id/txtIp"
+				android:maxEms="13"
+				android:inputType="none"
+				android:hint="请输入IP地址"/>
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="连接"
+				android:background="@drawable/btn_back"
+				android:onClick="connect"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</FrameLayout>
+

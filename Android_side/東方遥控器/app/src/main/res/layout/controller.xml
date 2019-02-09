@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:background="#000000">
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="X"
+				android:background="@drawable/tabs"
+				android:layout_weight="1.0"
+				android:id="@+id/btnX"/>
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="C"
+				android:background="@drawable/tabs"
+				android:layout_weight="1.0"
+				android:id="@+id/btnC"/>
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Esc"
+				android:background="@drawable/tabs"
+				android:layout_weight="1.0"
+				android:id="@+id/btnEsc"/>
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Enter"
+				android:background="@drawable/tabs"
+				android:layout_weight="1.0"
+				android:id="@+id/btnEnter"/>
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="P"
+				android:background="@drawable/tabs"
+				android:layout_weight="1.0"
+				android:id="@+id/btnP"/>
+
+			<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="摇杆"
+				android:background="@drawable/tabs"
+				android:layout_weight="1.0"
+				android:id="@+id/btnControlType"
+				android:onClick="svControlType"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+			<ImageView
+				android:src="@drawable/bg_ls_and_shoot"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:scaleType="fitXY"
+				android:id="@+id/ctlMoveAndShoot"/>
+
+			<FrameLayout
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_weight="4"
+				android:background="@drawable/btn_back">
+
+				<FrameLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@drawable/circle"
+					android:layout_gravity="bottom|right"
+					android:id="@+id/joystickZone"
+					android:layout_marginRight="28dp"
+					android:layout_marginBottom="20dp">
+
+					<ImageView
+						android:src="@drawable/thumb"
+						android:layout_width="75dp"
+						android:layout_height="75dp"
+						android:layout_margin="43dp"
+						android:id="@+id/joystickThumb"/>
+
+				</FrameLayout>
+
+				<FrameLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:id="@+id/touchScreenZone">
+
+					<ImageView
+						android:src="@drawable/ic_drag"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:scaleType="center"/>
+
+					<ImageView
+						android:src="@drawable/touch_point"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:id="@+id/touchpoint"
+						android:visibility="invisible"/>
+
+					<LinearLayout
+						android:orientation="horizontal"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="灵敏度"/>
+
+						<SeekBar
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_weight="1.0"
+							android:id="@+id/touchSensitive"/>
+
+					</LinearLayout>
+
+				</FrameLayout>
+
+			</FrameLayout>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|right"
+		android:id="@+id/txtStatus"
+		android:typeface="monospace"
+		android:layout_margin="5dp"/>
+
+</FrameLayout>
+

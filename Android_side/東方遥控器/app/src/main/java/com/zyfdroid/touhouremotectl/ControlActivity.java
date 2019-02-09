@@ -231,7 +231,7 @@ public class ControlActivity extends BaseActivity
 		catch (IOException e)
 		{}
 		float t=System.nanoTime() - t0;
-		setViewText(R.id.txtStatus, "TIME=" + (t / 1000000) + "ms, SUCCESS=" + success + ", DATA=" + byte2HexFormatted(OperateStruct.result));
+		//setViewText(R.id.txtStatus, "TIME=" + (t / 1000000) + "ms, SUCCESS=" + success + ", DATA=" + byte2HexFormatted(OperateStruct.result));
 	}
 
 	@Override

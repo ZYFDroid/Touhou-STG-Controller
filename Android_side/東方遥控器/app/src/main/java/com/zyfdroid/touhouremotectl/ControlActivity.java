@@ -5,6 +5,7 @@ import android.view.View.*;
 import android.view.*;
 import java.lang.reflect.*;
 import android.widget.*;
+import android.widget.SeekBar.*;
 
 public class ControlActivity extends BaseActivity
 {
@@ -13,6 +14,14 @@ public class ControlActivity extends BaseActivity
 	{
 		setContentView(R.layout.controller);
 
+		((View)findViewById(R.id.basePan)).setOnTouchListener(new OnTouchListener(){
+
+				@Override
+				public boolean onTouch(View p1, MotionEvent p2)
+				{
+					return true;//fix multitouch
+				}
+			});
 		OnTouchListener topKeyListener=new OnTouchListener(){
 
 			@Override
@@ -52,10 +61,14 @@ public class ControlActivity extends BaseActivity
 					float y=p2.getY(0);
 					OperateStruct.keyZ = (y < height / 3 * 2) ? 1 : 0;
 					OperateStruct.keyShift = (y > height / 3) ? 1 : 0;
+					
+					OperateStruct.keyX = (y <0 ) ? 1 : 0;
+					
 					if (p2.getAction() == MotionEvent.ACTION_UP)
 					{
 						OperateStruct.keyZ = 0;
 						OperateStruct.keyShift = 0;
+						OperateStruct.keyX=0;
 					}
 					return true;
 				}
@@ -73,24 +86,20 @@ public class ControlActivity extends BaseActivity
 					}
 					if (p2.getAction() == MotionEvent.ACTION_MOVE && down)
 					{
-						p1.setTranslationX(p1.getTranslationX() + (p2.getX(0) - px));
-						p1.setTranslationY(p1.getTranslationY() + (p2.getY(0) - py));
-						if (p1.getTranslationX() < ((p1.getWidth() - joystickZone.getWidth()) / 2))
-						{
-							p1.setTranslationX(((p1.getWidth() - joystickZone.getWidth()) / 2));
+						float tx=(p1.getTranslationX() + (p2.getX(0) - px));
+						float ty=(p1.getTranslationY() + (p2.getY(0) - py));
+						
+						float mdist=(float)Math.sqrt(tx*tx+ty*ty);
+						//摇杆范围从方形改成圆形
+						float tdist=joystickZone.getWidth()/2f-p1.getWidth()/2f;
+						
+						if(mdist>tdist){
+							tx = tx / mdist * tdist;
+							ty = ty / mdist * tdist;
 						}
-						if (p1.getTranslationY() < ((p1.getHeight() - joystickZone.getHeight()) / 2))
-						{
-							p1.setTranslationY(((p1.getHeight() - joystickZone.getHeight()) / 2));
-						}
-						if (p1.getTranslationX() > ((p1.getWidth() - joystickZone.getWidth()) / -2))
-						{
-							p1.setTranslationX(((p1.getWidth() - joystickZone.getWidth()) / -2));
-						}
-						if (p1.getTranslationY() > ((p1.getHeight() - joystickZone.getHeight()) / -2))
-						{
-							p1.setTranslationY(((p1.getHeight() - joystickZone.getHeight()) / -2));
-						}
+						
+						p1.setTranslationX(tx);
+						p1.setTranslationY(ty);
 						calculateRelativePos(
 							(int)(p1.getTranslationX() / ((joystickZone.getWidth() - p1.getWidth()) / 2f) * 3.9),
 							(int)(p1.getTranslationY() / ((joystickZone.getHeight() - p1.getHeight()) / 2f) * 3.9)
@@ -177,13 +186,124 @@ public class ControlActivity extends BaseActivity
 		}
 		touchsensitivebar.setMax(1900);
 		touchsensitivebar.setProgress((int)touchsensitive - 100);
+		
+		dpad=findViewById(R.id.dpad);
+		dpadSizeBar=findViewById(R.id.dpadSizs);
+		dpad.setOnTouchListener(new OnTouchListener(){
+
+				@Override
+				public boolean onTouch(View p1, MotionEvent p2)
+				{
+					float px=p2.getX();
+					float py=p2.getY();
+					float pw=p1.getWidth();
+					float ph=p1.getHeight();
+					OperateStruct.velU=(py < ph/3) ? 3 : 0;
+					OperateStruct.velD=(py > ph/3*2) ? 3 : 0;
+					OperateStruct.velL=(px < pw/3) ? 3 : 0;
+					OperateStruct.velR=(px > pw/3*2) ? 3 : 0;
+					if(p2.getAction()==MotionEvent.ACTION_UP){
+						OperateStruct.velU=0;
+						OperateStruct.velD=0;
+						OperateStruct.velL=0;
+						OperateStruct.velR=0;
+					}
+					
+					
+					
+					
+					return true;
+				}
+			}
+		);
+		
+		dpadSizeBar.setMax(2500);
+		dpadSizeBar.setProgress(1000);
+		String dpadsize=load("ds");
+		if(!dpadsize.isEmpty()){
+			dpadSizeBar.setProgress(Integer.parseInt(dpadsize));
+		}
+		dpad.setScaleX((float)dpadSizeBar.getProgress() / 1000);
+		dpad.setScaleY((float)dpadSizeBar.getProgress() / 1000);
+		
+		dpadSizeBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+
+				@Override
+				public void onProgressChanged(SeekBar p1, int p2, boolean p3)
+				{
+					dpad.setScaleX((float)dpadSizeBar.getProgress() / 1000);
+					dpad.setScaleY((float)dpadSizeBar.getProgress() / 1000);
+				}
+
+				@Override
+				public void onStartTrackingTouch(SeekBar p1)
+				{
+				}
+
+				@Override
+				public void onStopTrackingTouch(SeekBar p1)
+				{
+					
+					dpad.setScaleX((float)dpadSizeBar.getProgress() / 1000);
+					dpad.setScaleY((float)dpadSizeBar.getProgress() / 1000);
+					save("ds",String.valueOf(dpadSizeBar.getProgress()));
+				}
+			});
+		
+		
+		SeekBar joysSizeBar=findViewById(R.id.joysSize);
+		joysSizeBar.setMax(2500);
+		joysSizeBar.setProgress(1000);
+		String joysize=load("js");
+		if(!joysize.isEmpty()){
+			joysSizeBar.setProgress(Integer.parseInt(joysize));
+		}
+		joystickZone.setScaleX((float)joysSizeBar.getProgress() / 1000);
+		joystickZone.setScaleY((float)joysSizeBar.getProgress() / 1000);
+
+		joysSizeBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+
+				@Override
+				public void onProgressChanged(SeekBar p1, int p2, boolean p3)
+				{
+					joystickZone.setScaleX((float)p1.getProgress() / 1000);
+					joystickZone.setScaleY((float)p1.getProgress() / 1000);
+				}
+
+				@Override
+				public void onStartTrackingTouch(SeekBar p1)
+				{
+				}
+
+				@Override
+				public void onStopTrackingTouch(SeekBar p1)
+				{
+
+					joystickZone.setScaleX((float)p1.getProgress() / 1000);
+					joystickZone.setScaleY((float)p1.getProgress() / 1000);
+					save("js",String.valueOf(p1.getProgress()));
+				}
+			});
+
+
+
+
+		
+		
+		
+		
+		
+		
 		loadControlType();
 	}
 	FrameLayout joystickZone;
 	ImageView touchpoint;
 	float touchsensitive=440;
 	SeekBar touchsensitivebar;
-
+	SeekBar dpadSizeBar;
+	ImageView dpad;
+	
+	
 	public float level(float in)
 	{
 		if (in < 0)
@@ -215,6 +335,10 @@ public class ControlActivity extends BaseActivity
 	public void onUiPrepared()
 	{
 		OperateStruct.reset();
+		dpad.setPivotX(dpad.getWidth());
+		dpad.setPivotY(dpad.getHeight());
+		joystickZone.setPivotX(joystickZone.getWidth());
+		joystickZone.setPivotY(joystickZone.getHeight());
 	}
 
 	@Override
@@ -231,7 +355,7 @@ public class ControlActivity extends BaseActivity
 		catch (IOException e)
 		{}
 		float t=System.nanoTime() - t0;
-		//setViewText(R.id.txtStatus, "TIME=" + (t / 1000000) + "ms, SUCCESS=" + success + ", DATA=" + byte2HexFormatted(OperateStruct.result));
+		setViewText(R.id.txtStatus, "TIME=" + (t / 1000000) + "ms, SUCCESS=" + success + ", DATA=" + byte2HexFormatted(OperateStruct.result));
 	}
 
 	@Override
@@ -254,9 +378,26 @@ public class ControlActivity extends BaseActivity
 		}
 		return str.toString();
 	}
+	
+	
 	public String toBinStr(byte input)
 	{
-		int b2=Byte.toUnsignedInt(input);
+		int b2 = ((int)input * 2) / 2;
+		if (b2 < 0) {
+			b2 += 256;
+		}
+		StringBuilder sb0 = new StringBuilder();
+		for (int i = 0; i < 8; i++)
+		{
+			sb0.insert(0,((b2 & 1) != 0) ? 1 : 0);
+			b2 = b2 >> 1;
+		}
+		return sb0.toString();
+	}
+	/*
+	public String toBinStr(byte input)
+	{
+		int b2=Byte.toUnsignedInt(input);//toUnsignedInt does not exist
 		StringBuilder sb0=new StringBuilder();
 		for (int i=0;i < 8;i++)
 		{
@@ -265,11 +406,12 @@ public class ControlActivity extends BaseActivity
 		}
 		return sb0.reverse().toString();
 	}
-
+	*/
 	@Override
 	protected void onDestroy()
 	{
 		save("sv", String.valueOf(touchsensitivebar.getProgress()+100));
+		
 		super.onDestroy();
 		try
 		{
@@ -291,12 +433,14 @@ public class ControlActivity extends BaseActivity
 
 	String[] controlTypes={
 		"摇杆",
-		"触控"
+		"触控",
+		"按键"
 	};
 
 	int[] controlTypeView={
-		R.id.joystickZone,
-		R.id.touchScreenZone
+		R.id.joystickPan,
+		R.id.touchScreenZone,
+		R.id.dpadZone
 	};
 
 
@@ -310,13 +454,15 @@ public class ControlActivity extends BaseActivity
 		}
 		save("ctl", String.valueOf(controlType));
 		loadControlType();
+		
+		onUiPrepared();
 	}
 
 	void loadControlType()
 	{
 		for (int i=0;i < controlTypeView.length;i++)
 		{
-			((View)findViewById(controlTypeView[i])).setVisibility(View.GONE);
+			((View)findViewById(controlTypeView[i])).setVisibility(View.INVISIBLE);
 		}
 		((View)findViewById(controlTypeView[controlType])).setVisibility(View.VISIBLE);
 		setViewText(R.id.btnControlType, controlTypes[controlType]);

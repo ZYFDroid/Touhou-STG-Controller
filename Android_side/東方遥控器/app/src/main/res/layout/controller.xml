@@ -83,30 +83,56 @@
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:layout_weight="4"
-				android:background="@drawable/btn_back">
+				android:background="@drawable/btn_back"
+				android:id="@+id/basePan">
 
 				<FrameLayout
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:background="@drawable/circle"
-					android:layout_gravity="bottom|right"
-					android:id="@+id/joystickZone"
-					android:layout_marginRight="28dp"
-					android:layout_marginBottom="20dp">
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:id="@+id/joystickPan">
 
-					<ImageView
-						android:src="@drawable/thumb"
-						android:layout_width="75dp"
-						android:layout_height="75dp"
-						android:layout_margin="43dp"
-						android:id="@+id/joystickThumb"/>
+					<LinearLayout
+						android:orientation="horizontal"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="摇杆大小"/>
+
+						<SeekBar
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:id="@+id/joysSize"/>
+
+					</LinearLayout>
+
+					<FrameLayout
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:background="@drawable/circle"
+						android:id="@+id/joystickZone"
+						android:layout_gravity="bottom|right"
+						android:layout_margin="20dp">
+
+						<ImageView
+							android:src="@drawable/thumb"
+							android:layout_width="75dp"
+							android:layout_height="75dp"
+							android:layout_margin="43dp"
+							android:id="@+id/joystickThumb"/>
+
+					</FrameLayout>
 
 				</FrameLayout>
 
 				<FrameLayout
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
-					android:id="@+id/touchScreenZone">
+					android:id="@+id/touchScreenZone"
+					android:visibility="gone">
 
 					<ImageView
 						android:src="@drawable/ic_drag"
@@ -137,6 +163,39 @@
 							android:layout_height="wrap_content"
 							android:layout_weight="1.0"
 							android:id="@+id/touchSensitive"/>
+
+					</LinearLayout>
+
+				</FrameLayout>
+
+				<FrameLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:id="@+id/dpadZone">
+
+					<ImageView
+						android:src="@drawable/dpad"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="bottom|right"
+						android:layout_margin="20dp"
+						android:id="@+id/dpad"/>
+
+					<LinearLayout
+						android:orientation="horizontal"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="center">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:text="方向键大小"/>
+
+						<SeekBar
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:id="@+id/dpadSizs"/>
 
 					</LinearLayout>
 

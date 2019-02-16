@@ -15,7 +15,6 @@ import java.io.*;
 
 public abstract class BaseActivity extends Activity
 {
-	//AIDE魔改版里自带的模板，整理了一下需要的东西
 
 	public static  int FPS=60;
 	Thread FrameThread;

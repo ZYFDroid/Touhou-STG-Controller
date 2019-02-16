@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">東方遥控器</string>
-    <string name="hello_world">Hello world!</string>
-    <style name="AppTheme" parent="@android:style/Theme.DeviceDefault">
-		<item name="android:windowNoTitle">true</item>
-		<item name="android:windowFullscreen">true</item>
-	</style>
-</resources>

@@ -1,6 +1,8 @@
 package com.zyfdroid.touhouremotectl;
 import java.io.*;
 import java.net.*;
+
+import android.annotation.SuppressLint;
 import android.view.View.*;
 import android.view.*;
 import java.lang.reflect.*;
@@ -9,13 +11,15 @@ import android.widget.SeekBar.*;
 
 public class ControlActivity extends BaseActivity
 {
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public void onPrepareUi()
 	{
 		setContentView(R.layout.controller);
 
-		((View)findViewById(R.id.basePan)).setOnTouchListener(new OnTouchListener(){
+		findViewById(R.id.basePan).setOnTouchListener(new OnTouchListener(){
 
+				@SuppressLint("ClickableViewAccessibility")
 				@Override
 				public boolean onTouch(View p1, MotionEvent p2)
 				{
@@ -24,6 +28,7 @@ public class ControlActivity extends BaseActivity
 			});
 		OnTouchListener topKeyListener=new OnTouchListener(){
 
+			@SuppressLint("ClickableViewAccessibility")
 			@Override
 			public boolean onTouch(View p1, MotionEvent p2)
 			{
@@ -39,21 +44,22 @@ public class ControlActivity extends BaseActivity
 						field.setInt(null, 0);
 					}
 				}
-				catch (NoSuchFieldException e)
+				catch (NoSuchFieldException ignored)
 				{}
-				catch (IllegalAccessException e)
+				catch (IllegalAccessException ignored)
 				{}
 				return false;
 			}
 		};
-		((Button)findViewById(R.id.btnC)).setOnTouchListener(topKeyListener);
-		((Button)findViewById(R.id.btnX)).setOnTouchListener(topKeyListener);
-		((Button)findViewById(R.id.btnEnter)).setOnTouchListener(topKeyListener);
-		((Button)findViewById(R.id.btnEsc)).setOnTouchListener(topKeyListener);
-		((Button)findViewById(R.id.btnP)).setOnTouchListener(topKeyListener);
+		findViewById(R.id.btnC).setOnTouchListener(topKeyListener);
+		findViewById(R.id.btnX).setOnTouchListener(topKeyListener);
+		findViewById(R.id.btnEnter).setOnTouchListener(topKeyListener);
+		findViewById(R.id.btnEsc).setOnTouchListener(topKeyListener);
+		findViewById(R.id.btnP).setOnTouchListener(topKeyListener);
 
-		((ImageView)findViewById(R.id.ctlMoveAndShoot)).setOnTouchListener(new OnTouchListener(){
+		findViewById(R.id.ctlMoveAndShoot).setOnTouchListener(new OnTouchListener(){
 
+				@SuppressLint("ClickableViewAccessibility")
 				@Override
 				public boolean onTouch(View p1, MotionEvent p2)
 				{
@@ -75,8 +81,9 @@ public class ControlActivity extends BaseActivity
 			}
 		);
 		joystickZone = findViewById(R.id.joystickZone);
-		((ImageView)findViewById(R.id.joystickThumb)).setOnTouchListener(new OnTouchListener(){
+		findViewById(R.id.joystickThumb).setOnTouchListener(new OnTouchListener(){
 				float px=0,py=0;boolean down=false;
+				@SuppressLint("ClickableViewAccessibility")
 				@Override
 				public boolean onTouch(View p1, MotionEvent p2)
 				{
@@ -117,10 +124,11 @@ public class ControlActivity extends BaseActivity
 			}
 		);
 		touchpoint = findViewById(R.id.touchpoint);
-		((View)findViewById(R.id.touchScreenZone)).setOnTouchListener(new OnTouchListener(){
+		findViewById(R.id.touchScreenZone).setOnTouchListener(new OnTouchListener(){
 				int lastx=0,lasty=0;
 				float scale=1;
 				int touchcd=2;
+				@SuppressLint("ClickableViewAccessibility")
 				@Override
 				public boolean onTouch(View p1, MotionEvent p2)
 				{
@@ -190,7 +198,6 @@ public class ControlActivity extends BaseActivity
 		dpad=findViewById(R.id.dpad);
 		dpadSizeBar=findViewById(R.id.dpadSizs);
 		dpad.setOnTouchListener(new OnTouchListener(){
-
 				@Override
 				public boolean onTouch(View p1, MotionEvent p2)
 				{
@@ -208,10 +215,6 @@ public class ControlActivity extends BaseActivity
 						OperateStruct.velL=0;
 						OperateStruct.velR=0;
 					}
-					
-					
-					
-					
 					return true;
 				}
 			}
@@ -352,7 +355,7 @@ public class ControlActivity extends BaseActivity
 			SocketClient.getInstance().send(OperateStruct.result);
 			success = true;
 		}
-		catch (IOException e)
+		catch (IOException ignored)
 		{}
 		float t=System.nanoTime() - t0;
 		setViewText(R.id.txtStatus, "TIME=" + (t / 1000000) + "ms, SUCCESS=" + success + ", DATA=" + byte2HexFormatted(OperateStruct.result));
@@ -417,13 +420,13 @@ public class ControlActivity extends BaseActivity
 		{
 			OperateStruct.reset();
 			SocketClient.getInstance().send(OperateStruct.result);
-			SocketClient.getInstance().disposeInstance();
+			SocketClient.disposeInstance();
 		}
-		catch (UnknownHostException e)
+		catch (UnknownHostException ignored)
 		{}
-		catch (SocketException e)
+		catch (SocketException ignored)
 		{}
-		catch (IOException e)
+		catch (IOException ignored)
 		{}
 	}
 
@@ -460,11 +463,10 @@ public class ControlActivity extends BaseActivity
 
 	void loadControlType()
 	{
-		for (int i=0;i < controlTypeView.length;i++)
-		{
-			((View)findViewById(controlTypeView[i])).setVisibility(View.INVISIBLE);
-		}
-		((View)findViewById(controlTypeView[controlType])).setVisibility(View.VISIBLE);
+        for (int aControlTypeView : controlTypeView) {
+            findViewById(aControlTypeView).setVisibility(View.INVISIBLE);
+        }
+		findViewById(controlTypeView[controlType]).setVisibility(View.VISIBLE);
 		setViewText(R.id.btnControlType, controlTypes[controlType]);
 	}
 

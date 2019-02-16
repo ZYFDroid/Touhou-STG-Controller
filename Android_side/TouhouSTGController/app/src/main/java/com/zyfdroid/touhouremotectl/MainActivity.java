@@ -1,8 +1,6 @@
 package com.zyfdroid.touhouremotectl;
 
 import android.view.*;
-import android.widget.*;
-import android.app.*;
 import android.os.*;
 import android.content.*;
 import java.net.*;
@@ -16,10 +14,8 @@ public class MainActivity extends BaseActivity
 		setContentView(R.layout.main);
 		setViewText(R.id.txtIp,load("ip"));
 		//禁止严格模式，允许在主线程上搞网络操作
-		if (android.os.Build.VERSION.SDK_INT > 9) {
-			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-			StrictMode.setThreadPolicy(policy);
-		}
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
 	}
 	@Override
 	public void onBackPressed()

@@ -4,7 +4,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
-	android:background="#000000">
+	android:background="#ff000000">
 
 	<LinearLayout
 		android:orientation="vertical"
@@ -87,42 +87,43 @@
 				android:id="@+id/basePan">
 
 				<FrameLayout
+					android:id="@+id/joystickPan"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
-					android:id="@+id/joystickPan">
+					android:visibility="invisible">
 
 					<LinearLayout
-						android:orientation="horizontal"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:gravity="center">
+						android:gravity="center"
+						android:orientation="horizontal">
 
 						<TextView
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:text="摇杆大小"/>
+							android:text="摇杆大小" />
 
 						<SeekBar
+							android:id="@+id/joysSize"
 							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:id="@+id/joysSize"/>
+							android:layout_height="wrap_content" />
 
 					</LinearLayout>
 
 					<FrameLayout
+						android:id="@+id/joystickZone"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:background="@drawable/circle"
-						android:id="@+id/joystickZone"
 						android:layout_gravity="bottom|right"
-						android:layout_margin="20dp">
+						android:layout_margin="20dp"
+						android:background="@drawable/circle">
 
 						<ImageView
-							android:src="@drawable/thumb"
+							android:id="@+id/joystickThumb"
 							android:layout_width="75dp"
 							android:layout_height="75dp"
 							android:layout_margin="43dp"
-							android:id="@+id/joystickThumb"/>
+							android:src="@drawable/thumb" />
 
 					</FrameLayout>
 

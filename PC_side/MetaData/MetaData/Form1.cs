@@ -273,13 +273,14 @@ namespace MetaData
 					if (IpEntry.AddressList[i].AddressFamily == AddressFamily.InterNetwork)
 					{
 						sbuilder.Append( IpEntry.AddressList[i].ToString());
+                        sbuilder.Append("  ");
 					}
 				}
 				return sbuilder.ToString().Trim();
 			}
 			catch (Exception ex)
 			{
-				return "";
+				return "无法获取IP地址";
 			}
 		}
 		

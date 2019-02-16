@@ -16,87 +16,81 @@ namespace MetaData
 			this.InitializeComponent();
 		}
 		
+
 		[DllImport("user32.dll")]
 		public static extern int SetCursorPos(int x, int y);
-		
-		private void calculatePolar()
-		{
-			float num = (float)(Control.MousePosition.X - this.mx);
-			float num2 = (float)(Control.MousePosition.Y - this.my);
-			float num3 = num;
-			double num4 = (double)(num3 * num3);
-			float num5 = num2;
-			float num6 = (float)Math.Sqrt(num4 + (double)(num5 * num5));
-			float num8;
-			float num9;
-			if (Math.Abs(num) > Math.Abs(num2))
-			{
-				float num7 = num;
-				num8 = num7 / num7;
-				num9 = num2 / num;
-				if (num <= 0f && num2 >= 0f)
-				{
-					num8 = -num8;
-					num9 = -num9;
-				}
-			}
-			else
-			{
-				float num10 = num2;
-				num9 = num10 / num10;
-				num8 = num / num2;
-				if (num2 <= 0f && num >= 0f)
-				{
-					num8 = -num8;
-					num9 = -num9;
-				}
-			}
-			if (num < 0f && num2 < 0f)
-			{
-				num8 = -num8;
-				num9 = -num9;
-			}
-			if (num == 0f && num2 == 0f)
-			{
-				num8 = 0f;
-				num9 = 0f;
-			}
-			if (this.checkBox1.Checked)
-			{
-				Form1.SetCursorPos(this.mx, this.my);
-				if (num8 == 0f)
-				{
-					this.velL = 0;
-					this.velR = 0;
-				}
-				else if (num8 > 0f)
-				{
-					this.velL = 0;
-					this.velR = (int)Math.Round((double)((float)this.level((int)num6) * num8));
-				}
-				else
-				{
-					this.velR = 0;
-					this.velL = (int)Math.Round((double)((float)this.level((int)num6) * -(double)num8));
-				}
-				if (num9 == 0f)
-				{
-					this.velU = 0;
-					this.velD = 0;
-					return;
-				}
-				if (num9 > 0f)
-				{
-					this.velU = 0;
-					this.velD = (int)Math.Round((double)((float)this.level((int)num6) * num9));
-					return;
-				}
-				this.velD = 0;
-				this.velU = (int)Math.Round((double)((float)this.level((int)num6) * -(double)num9));
-			}
-		}
-		
-		private void timer2_Tick(object sender, EventArgs e)
+        [DllImport("user32.dll")]
+        private static extern bool GetAsyncKeyState(int vKey);
+
+        public int velU;
+        public int velD;
+        public int velL;
+        public int velR;
+
+        private int step = 1;
+
+        private int fps;
+        private int vsec;
+        private int gccd = 800;
+        private bool hkey;
+
+        private int mx;
+        private int my;
+
+        private InputEmu ipe = new InputEmu();
+
+        private void calculatePolar()
+        {
+            float dx = Control.MousePosition.X - mx;
+            float dy = Control.MousePosition.Y - my;
+            float length = (float)Math.Sqrt(dx * dx + dy * dy);
+            float vx = 0, vy = 0;
+            if (Math.Abs(dx) > Math.Abs(dy))
+            {
+                vx = dx / dx; vy = dy / dx;
+                if (dx <= 0 && dy >= 0) { vx = -vx; vy = -vy; }
+            }
+            else
+            {
+                vy = dy / dy; vx = dx / dy;
+                if (dy <= 0 && dx >= 0) { vx = -vx; vy = -vy; }
+            }
+            if (dx < 0 && dy < 0) { vx = -vx; vy = -vy; }
+
+            if (dx == 0 && dy == 0) { vx = 0; vy = 0; }
+            if (checkBox1.Checked)
+            {
+                SetCursorPos(mx, my);
+                if (vx == 0)
+                {
+                    velL = 0; velR = 0;
+                }
+                else if (vx > 0)
+                {
+                    velL = 0; velR = (int)Math.Round((float)level((int)length) * vx);
+                }
+                else
+                {
+                    velR = 0; velL = (int)Math.Round((float)level((int)length) * -vx);
+                }
+
+                if (vy == 0)
+                {
+                    velU = 0; velD = 0;
+                }
+                else if (vy > 0)
+                {
+                    velU = 0; velD = (int)Math.Round((float)level((int)length) * vy);
+                }
+                else
+                {
+                    velD = 0; velU = (int)Math.Round((float)level((int)length) * -vy);
+                }
+            }
+        }
+
+
+        private void timer2_Tick(object sender, EventArgs e)
 		{
 			this.step++;
 			if (this.step > 3)
@@ -288,25 +282,7 @@ namespace MetaData
 				return "";
 			}
 		}
-		[DllImport("user32.dll")]
-		private static extern bool GetAsyncKeyState(int vKey);
 		
-		public int velU;
-		public int velD;
-		public int velL;
-		public int velR;
-		
-		private int step = 1;
-
-		private int fps;
-		private int vsec;
-		private int gccd = 800;
-		private bool hkey;
-		
-		private int mx;
-		private int my;
-		
-		private InputEmu ipe = new InputEmu();
 
 		private void groupBox1_Enter(object sender, EventArgs e)
 		{

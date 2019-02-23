@@ -45,12 +45,12 @@ namespace MetaData
 			if (File.Exists("DD85590.32.dll"))
 			{
 				this.lblDllCheck.ForeColor = Color.Green;
-				this.lblDllCheck.Text = "已找到DD85590.32.dll √";
+				this.lblDllCheck.Text = "已找到DLL √";
 			}
 			else
 			{
 				this.lblDllCheck.ForeColor = Color.Red;
-				this.lblDllCheck.Text = "未找到DD85590.32.dll ×";
+				this.lblDllCheck.Text = "未找到DLL ×";
 			}
 			this.btnAccept.Enabled = (this.checkBox1.Checked && this.lblDllCheck.Text.StartsWith("已"));
 		}
